@@ -31,6 +31,17 @@ jobs:
       - name: Build Backend Docker Image
         run: docker build -t ci-cd-backend .
 
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push Backend Docker Image
+        run: |
+          docker tag ci-cd-backend sirisenagandla/ci-cd-backend:latest
+          docker push sirisenagandla/ci-cd-backend:latest  
+
   frontend-ci:
     runs-on: ubuntu-latest
 
@@ -55,3 +66,14 @@ jobs:
 
       - name: Build Frontend Docker Image
         run: docker build -t ci-cd-frontend .
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push Frontend Docker Image
+        run: |
+          docker tag ci-cd-frontend sirisenagandla/ci-cd-frontend:latest
+          docker push sirisenagandla/ci-cd-frontend:latest  
